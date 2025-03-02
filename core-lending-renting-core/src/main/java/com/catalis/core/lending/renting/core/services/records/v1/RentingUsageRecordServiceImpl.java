@@ -1,0 +1,74 @@
+package com.catalis.core.lending.renting.core.services.records.v1;
+
+import com.catalis.common.core.filters.FilterRequest;
+import com.catalis.common.core.filters.FilterUtils;
+import com.catalis.common.core.queries.PaginationResponse;
+import com.catalis.core.lending.renting.core.mappers.records.v1.RentingUsageRecordMapper;
+import com.catalis.core.lending.renting.interfaces.dtos.records.v1.RentingUsageRecordDTO;
+import com.catalis.core.lending.renting.models.entities.records.v1.RentingUsageRecord;
+import com.catalis.core.lending.renting.models.repositories.records.v1.RentingUsageRecordRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Mono;
+
+import java.time.LocalDateTime;
+
+@Service
+@Transactional
+public class RentingUsageRecordServiceImpl implements RentingUsageRecordService {
+
+    @Autowired
+    private RentingUsageRecordRepository repository;
+
+    @Autowired
+    private RentingUsageRecordMapper mapper;
+
+    @Override
+    public Mono<PaginationResponse<RentingUsageRecordDTO>> findAll(Long rentingAgreementId, Long rentingAssetId, FilterRequest<RentingUsageRecordDTO> filterRequest) {
+        filterRequest.getFilters().setRentingAssetId(rentingAssetId);
+        return FilterUtils.createFilter(
+                RentingUsageRecord.class,
+                mapper::toDTO
+        ).filter(filterRequest);
+    }
+
+    @Override
+    public Mono<RentingUsageRecordDTO> create(Long rentingAgreementId, Long rentingAssetId, RentingUsageRecordDTO dto) {
+        RentingUsageRecord entity = mapper.toEntity(dto);
+        entity.setRentingAssetId(rentingAssetId);
+        entity.setCreatedAt(LocalDateTime.now());
+        entity.setUpdatedAt(LocalDateTime.now());
+        return repository.save(entity)
+                .map(mapper::toDTO);
+    }
+
+    @Override
+    public Mono<RentingUsageRecordDTO> getById(Long rentingAgreementId, Long rentingAssetId, Long rentingUsageRecordId) {
+        return repository.findById(rentingUsageRecordId)
+                .filter(record -> record.getRentingAssetId().equals(rentingAssetId))
+                .map(mapper::toDTO);
+    }
+
+    @Override
+    public Mono<RentingUsageRecordDTO> update(Long rentingAgreementId, Long rentingAssetId, Long rentingUsageRecordId, RentingUsageRecordDTO dto) {
+        return repository.findById(rentingUsageRecordId)
+                .filter(record -> record.getRentingAssetId().equals(rentingAssetId))
+                .flatMap(existingRecord -> {
+                    RentingUsageRecord updatedEntity = mapper.toEntity(dto);
+                    updatedEntity.setRentingUsageRecordId(existingRecord.getRentingUsageRecordId());
+                    updatedEntity.setRentingAssetId(existingRecord.getRentingAssetId());
+                    updatedEntity.setCreatedAt(existingRecord.getCreatedAt());
+                    updatedEntity.setUpdatedAt(LocalDateTime.now());
+                    return repository.save(updatedEntity);
+                })
+                .map(mapper::toDTO);
+    }
+
+    @Override
+    public Mono<Void> delete(Long rentingAgreementId, Long rentingAssetId, Long rentingUsageRecordId) {
+        return repository.findById(rentingUsageRecordId)
+                .filter(record -> record.getRentingAssetId().equals(rentingAssetId))
+                .flatMap(repository::delete);
+    }
+}
