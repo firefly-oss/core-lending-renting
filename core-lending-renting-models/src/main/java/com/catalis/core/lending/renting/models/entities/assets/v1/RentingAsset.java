@@ -1,6 +1,5 @@
 package com.catalis.core.lending.renting.models.entities.assets.v1;
 
-import com.catalis.core.lending.renting.interfaces.enums.assets.v1.AssetTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,8 +25,8 @@ public class RentingAsset {
     @Column("renting_agreement_id")
     private Long rentingAgreementId;
 
-    @Column("asset_type")
-    private AssetTypeEnum assetType;
+    @Column("asset_type_id")
+    private Long assetTypeId;
 
     @Column("asset_description")
     private String assetDescription;
