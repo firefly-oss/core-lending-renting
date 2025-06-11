@@ -4,8 +4,37 @@
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2-green.svg)](https://spring.io/projects/spring-boot)
 [![Maven](https://img.shields.io/badge/Maven-3.8-blue.svg)](https://maven.apache.org/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue.svg)](https://www.postgresql.org/)
+[![Spring WebFlux](https://img.shields.io/badge/Spring%20WebFlux-Reactive-brightgreen.svg)](https://docs.spring.io/spring-framework/reference/web/webflux.html)
+[![R2DBC](https://img.shields.io/badge/R2DBC-Reactive-yellow.svg)](https://r2dbc.io/)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 A microservice component of the Firefly platform that manages renting and operating lease agreements, assets, billing schedules, and related operations.
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Features](#features)
+- [Architecture](#architecture)
+  - [Modules](#modules)
+  - [Technologies](#technologies)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Environment Variables](#environment-variables)
+  - [Building the Application](#building-the-application)
+  - [Running the Application](#running-the-application)
+- [API Documentation](#api-documentation)
+  - [Main Endpoints](#main-endpoints)
+- [Development](#development)
+  - [Project Structure](#project-structure)
+  - [Database Migrations](#database-migrations)
+  - [Database ER Diagram](#database-er-diagram)
+  - [Profiles](#profiles)
+- [Deployment](#deployment)
+  - [Docker](#docker)
+  - [Kubernetes](#kubernetes)
+- [Monitoring](#monitoring)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Overview
 
@@ -123,6 +152,95 @@ Database migrations are managed with Flyway and are located in:
 core-lending-renting-models/src/main/resources/db/migration/
 ```
 
+### Database ER Diagram
+
+The following diagram shows the entity relationships in the database:
+
+```mermaid
+erDiagram
+    renting_agreement ||--o{ renting_asset : "has"
+    renting_agreement ||--o{ renting_billing_schedule : "has"
+    renting_asset ||--o{ renting_usage_record : "has"
+    renting_asset ||--o{ renting_service_event : "has"
+    renting_asset ||--o{ renting_return_record : "has"
+
+    renting_agreement {
+        bigint renting_agreement_id PK
+        bigint contract_id
+        bigint customer_id
+        enum agreement_status
+        date start_date
+        date end_date
+        decimal monthly_rent
+        boolean services_included
+        decimal insurance_fee
+        text remarks
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    renting_asset {
+        bigint renting_asset_id PK
+        bigint renting_agreement_id FK
+        bigint asset_type_id
+        varchar asset_description
+        varchar asset_serial_number
+        decimal asset_value
+        boolean is_active
+        text note
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    renting_billing_schedule {
+        bigint renting_billing_schedule_id PK
+        bigint renting_agreement_id FK
+        int installment_number
+        date due_date
+        decimal rent_amount
+        decimal service_fee
+        decimal total_due
+        boolean is_paid
+        date paid_date
+        text note
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    renting_usage_record {
+        bigint renting_usage_record_id PK
+        bigint renting_asset_id FK
+        date usage_date
+        int mileage
+        text usage_detail
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    renting_service_event {
+        bigint renting_service_event_id PK
+        bigint renting_asset_id FK
+        date event_date
+        enum event_type
+        decimal cost
+        text note
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    renting_return_record {
+        bigint renting_return_record_id PK
+        bigint renting_asset_id FK
+        date actual_return_date
+        text condition_report
+        decimal damage_cost
+        boolean is_finalized
+        text note
+        timestamp created_at
+        timestamp updated_at
+    }
+```
+
 ### Profiles
 
 The application supports multiple profiles:
@@ -156,3 +274,23 @@ The service exposes the following actuator endpoints:
 3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
+
+## License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+
+```
+Copyright © 2023 Catalis
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```

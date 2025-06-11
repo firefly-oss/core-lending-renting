@@ -1,0 +1,1946 @@
+openapi: 3.0.1
+info:
+  title: core-lending-renting
+  description: Renting Core Application
+  contact:
+    name: Catalis Development
+    email: dev@catalis.com
+  version: 1.0.0
+servers:
+  - url: 'http://core.catalis.vc/factoring'
+    description: Development Environment
+  - url: /
+    description: Local Development Environment
+tags:
+  - name: RentingAgreement
+    description: Operations on renting (operating lease) agreements
+  - name: RentingAsset
+    description: Operations on rented assets under a renting agreement
+  - name: RentingServiceEvent
+    description: Maintenance/repair service events for a rented asset
+  - name: RentingReturnRecord
+    description: Tracks the final return details of a rented asset.
+  - name: RentingBillingSchedule
+    description: Billing installment schedules for a renting agreement
+  - name: RentingUsageRecord
+    description: Usage logs (mileage/hours) for a rented asset
+paths:
+  '/api/v1/renting-agreements/{rentingAgreementId}':
+    get:
+      tags:
+        - RentingAgreement
+      summary: Get a renting agreement by ID
+      operationId: getById
+      parameters:
+        - name: rentingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RentingAgreementDTO'
+    put:
+      tags:
+        - RentingAgreement
+      summary: Update an existing renting agreement
+      operationId: update
+      parameters:
+        - name: rentingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: >-
+            Unique key for idempotent requests. If provided, ensures that
+            identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RentingAgreementDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RentingAgreementDTO'
+    delete:
+      tags:
+        - RentingAgreement
+      summary: Delete a renting agreement
+      operationId: delete
+      parameters:
+        - name: rentingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+  '/api/v1/renting-agreements/{rentingAgreementId}/billing-schedules/{rentingBillingScheduleId}':
+    get:
+      tags:
+        - RentingBillingSchedule
+      summary: Get a billing schedule entry by ID
+      operationId: getById_1
+      parameters:
+        - name: rentingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: rentingBillingScheduleId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RentingBillingScheduleDTO'
+    put:
+      tags:
+        - RentingBillingSchedule
+      summary: Update a billing schedule entry
+      operationId: update_1
+      parameters:
+        - name: rentingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: rentingBillingScheduleId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: >-
+            Unique key for idempotent requests. If provided, ensures that
+            identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RentingBillingScheduleDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RentingBillingScheduleDTO'
+    delete:
+      tags:
+        - RentingBillingSchedule
+      summary: Delete a billing schedule entry
+      operationId: delete_1
+      parameters:
+        - name: rentingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: rentingBillingScheduleId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+  '/api/v1/renting-agreements/{rentingAgreementId}/assets/{rentingAssetId}':
+    get:
+      tags:
+        - RentingAsset
+      summary: Get an asset by ID
+      operationId: getById_2
+      parameters:
+        - name: rentingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: rentingAssetId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RentingAssetDTO'
+    put:
+      tags:
+        - RentingAsset
+      summary: Update an asset record
+      operationId: update_2
+      parameters:
+        - name: rentingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: rentingAssetId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: >-
+            Unique key for idempotent requests. If provided, ensures that
+            identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RentingAssetDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RentingAssetDTO'
+    delete:
+      tags:
+        - RentingAsset
+      summary: Delete an asset record
+      operationId: delete_2
+      parameters:
+        - name: rentingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: rentingAssetId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+  '/api/v1/renting-agreements/{rentingAgreementId}/assets/{rentingAssetId}/usage-records/{rentingUsageRecordId}':
+    get:
+      tags:
+        - RentingUsageRecord
+      summary: Get a usage record by ID
+      operationId: getById_3
+      parameters:
+        - name: rentingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: rentingAssetId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: rentingUsageRecordId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RentingUsageRecordDTO'
+    put:
+      tags:
+        - RentingUsageRecord
+      summary: Update a usage record
+      operationId: update_3
+      parameters:
+        - name: rentingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: rentingAssetId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: rentingUsageRecordId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: >-
+            Unique key for idempotent requests. If provided, ensures that
+            identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RentingUsageRecordDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RentingUsageRecordDTO'
+    delete:
+      tags:
+        - RentingUsageRecord
+      summary: Delete a usage record
+      operationId: delete_3
+      parameters:
+        - name: rentingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: rentingAssetId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: rentingUsageRecordId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+  '/api/v1/renting-agreements/{rentingAgreementId}/assets/{rentingAssetId}/service-events/{rentingServiceEventId}':
+    get:
+      tags:
+        - RentingServiceEvent
+      summary: Get a service event by ID
+      operationId: getById_4
+      parameters:
+        - name: rentingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: rentingAssetId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: rentingServiceEventId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RentingServiceEventDTO'
+    put:
+      tags:
+        - RentingServiceEvent
+      summary: Update a service event record
+      operationId: update_4
+      parameters:
+        - name: rentingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: rentingAssetId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: rentingServiceEventId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: >-
+            Unique key for idempotent requests. If provided, ensures that
+            identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RentingServiceEventDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RentingServiceEventDTO'
+    delete:
+      tags:
+        - RentingServiceEvent
+      summary: Delete a service event record
+      operationId: delete_4
+      parameters:
+        - name: rentingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: rentingAssetId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: rentingServiceEventId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+  '/api/v1/renting-agreements/{rentingAgreementId}/assets/{rentingAssetId}/return-record':
+    get:
+      tags:
+        - RentingReturnRecord
+      summary: Get the return record of an asset (if any)
+      operationId: getByAsset
+      parameters:
+        - name: rentingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: rentingAssetId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RentingReturnRecordDTO'
+    put:
+      tags:
+        - RentingReturnRecord
+      summary: 'Update the return record (e.g., if damageCost changes)'
+      operationId: update_5
+      parameters:
+        - name: rentingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: rentingAssetId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: >-
+            Unique key for idempotent requests. If provided, ensures that
+            identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RentingReturnRecordDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RentingReturnRecordDTO'
+    post:
+      tags:
+        - RentingReturnRecord
+      summary: Create a return record (once the asset is returned)
+      operationId: create_5
+      parameters:
+        - name: rentingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: rentingAssetId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: >-
+            Unique key for idempotent requests. If provided, ensures that
+            identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RentingReturnRecordDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RentingReturnRecordDTO'
+    delete:
+      tags:
+        - RentingReturnRecord
+      summary: Delete the return record for an asset
+      operationId: delete_5
+      parameters:
+        - name: rentingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: rentingAssetId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+  /api/v1/renting-agreements:
+    get:
+      tags:
+        - RentingAgreement
+      summary: List or search renting agreements
+      operationId: findAll
+      parameters:
+        - name: pagination.pageNumber
+          in: query
+          description: Page number (0-based)
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: pagination.pageSize
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: pagination.sortBy
+          in: query
+          description: Field to sort by
+          required: false
+          schema:
+            type: string
+        - name: pagination.sortDirection
+          in: query
+          description: Sort direction (ASC or DESC)
+          required: false
+          schema:
+            type: string
+            default: DESC
+        - name: options.caseInsensitiveStrings
+          in: query
+          description: Enable case-insensitive string filtering
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: options.includeInheritedFields
+          in: query
+          description: Include fields from parent classes
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: filters.contractId
+          in: query
+          description: Exact filter for contract id
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: filters.customerId
+          in: query
+          description: Exact filter for customer id
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: filters.agreementStatus
+          in: query
+          description: Exact filter for agreement status
+          required: false
+          schema:
+            type: string
+            enum:
+              - ACTIVE
+              - SUSPENDED
+              - CLOSED
+              - TERMINATED
+              - DEFAULTED
+        - name: filters.startDate
+          in: query
+          description: Exact filter for start date
+          required: false
+          schema:
+            type: string
+        - name: filters.endDate
+          in: query
+          description: Exact filter for end date
+          required: false
+          schema:
+            type: string
+        - name: filters.monthlyRent
+          in: query
+          description: Exact filter for monthly rent
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[monthlyRent].from'
+          in: query
+          description: Filter monthly rent from value
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[monthlyRent].to'
+          in: query
+          description: Filter monthly rent to value
+          required: false
+          schema:
+            type: string
+        - name: filters.servicesIncluded
+          in: query
+          description: Exact filter for services included
+          required: false
+          schema:
+            type: boolean
+        - name: filters.insuranceFee
+          in: query
+          description: Exact filter for insurance fee
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[insuranceFee].from'
+          in: query
+          description: Filter insurance fee from value
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[insuranceFee].to'
+          in: query
+          description: Filter insurance fee to value
+          required: false
+          schema:
+            type: string
+        - name: filters.remarks
+          in: query
+          description: Exact filter for remarks
+          required: false
+          schema:
+            type: string
+        - name: filters.createdAt
+          in: query
+          description: Exact filter for created at
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[createdAt].from'
+          in: query
+          description: Filter created at from value
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[createdAt].to'
+          in: query
+          description: Filter created at to value
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: filters.updatedAt
+          in: query
+          description: Exact filter for updated at
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[updatedAt].from'
+          in: query
+          description: Filter updated at from value
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[updatedAt].to'
+          in: query
+          description: Filter updated at to value
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PaginationResponseRentingAgreementDTO'
+    post:
+      tags:
+        - RentingAgreement
+      summary: Create a new renting agreement
+      operationId: create
+      parameters:
+        - name: X-Idempotency-Key
+          in: header
+          description: >-
+            Unique key for idempotent requests. If provided, ensures that
+            identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RentingAgreementDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RentingAgreementDTO'
+  '/api/v1/renting-agreements/{rentingAgreementId}/billing-schedules':
+    get:
+      tags:
+        - RentingBillingSchedule
+      summary: List or search billing schedule entries for a renting agreement
+      operationId: findAll_1
+      parameters:
+        - name: rentingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: pagination.pageNumber
+          in: query
+          description: Page number (0-based)
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: pagination.pageSize
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: pagination.sortBy
+          in: query
+          description: Field to sort by
+          required: false
+          schema:
+            type: string
+        - name: pagination.sortDirection
+          in: query
+          description: Sort direction (ASC or DESC)
+          required: false
+          schema:
+            type: string
+            default: DESC
+        - name: options.caseInsensitiveStrings
+          in: query
+          description: Enable case-insensitive string filtering
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: options.includeInheritedFields
+          in: query
+          description: Include fields from parent classes
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: filters.rentingAgreementId
+          in: query
+          description: Exact filter for renting agreement id
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: filters.installmentNumber
+          in: query
+          description: Exact filter for installment number
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: 'rangeFilters.ranges[installmentNumber].from'
+          in: query
+          description: Filter installment number from value
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: 'rangeFilters.ranges[installmentNumber].to'
+          in: query
+          description: Filter installment number to value
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: filters.dueDate
+          in: query
+          description: Exact filter for due date
+          required: false
+          schema:
+            type: string
+        - name: filters.rentAmount
+          in: query
+          description: Exact filter for rent amount
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[rentAmount].from'
+          in: query
+          description: Filter rent amount from value
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[rentAmount].to'
+          in: query
+          description: Filter rent amount to value
+          required: false
+          schema:
+            type: string
+        - name: filters.serviceFee
+          in: query
+          description: Exact filter for service fee
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[serviceFee].from'
+          in: query
+          description: Filter service fee from value
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[serviceFee].to'
+          in: query
+          description: Filter service fee to value
+          required: false
+          schema:
+            type: string
+        - name: filters.totalDue
+          in: query
+          description: Exact filter for total due
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[totalDue].from'
+          in: query
+          description: Filter total due from value
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[totalDue].to'
+          in: query
+          description: Filter total due to value
+          required: false
+          schema:
+            type: string
+        - name: filters.isPaid
+          in: query
+          description: Exact filter for is paid
+          required: false
+          schema:
+            type: boolean
+        - name: filters.paidDate
+          in: query
+          description: Exact filter for paid date
+          required: false
+          schema:
+            type: string
+        - name: filters.note
+          in: query
+          description: Exact filter for note
+          required: false
+          schema:
+            type: string
+        - name: filters.createdAt
+          in: query
+          description: Exact filter for created at
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[createdAt].from'
+          in: query
+          description: Filter created at from value
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[createdAt].to'
+          in: query
+          description: Filter created at to value
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: filters.updatedAt
+          in: query
+          description: Exact filter for updated at
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[updatedAt].from'
+          in: query
+          description: Filter updated at from value
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[updatedAt].to'
+          in: query
+          description: Filter updated at to value
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: >-
+                  #/components/schemas/PaginationResponseRentingBillingScheduleDTO
+    post:
+      tags:
+        - RentingBillingSchedule
+      summary: Create a new billing schedule entry
+      operationId: create_1
+      parameters:
+        - name: rentingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: >-
+            Unique key for idempotent requests. If provided, ensures that
+            identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RentingBillingScheduleDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RentingBillingScheduleDTO'
+  '/api/v1/renting-agreements/{rentingAgreementId}/assets':
+    get:
+      tags:
+        - RentingAsset
+      summary: List or search assets for a renting agreement
+      operationId: findAll_2
+      parameters:
+        - name: rentingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: pagination.pageNumber
+          in: query
+          description: Page number (0-based)
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: pagination.pageSize
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: pagination.sortBy
+          in: query
+          description: Field to sort by
+          required: false
+          schema:
+            type: string
+        - name: pagination.sortDirection
+          in: query
+          description: Sort direction (ASC or DESC)
+          required: false
+          schema:
+            type: string
+            default: DESC
+        - name: options.caseInsensitiveStrings
+          in: query
+          description: Enable case-insensitive string filtering
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: options.includeInheritedFields
+          in: query
+          description: Include fields from parent classes
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: filters.rentingAgreementId
+          in: query
+          description: Exact filter for renting agreement id
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: filters.assetTypeId
+          in: query
+          description: Exact filter for asset type id
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: filters.assetDescription
+          in: query
+          description: Exact filter for asset description
+          required: false
+          schema:
+            type: string
+        - name: filters.assetSerialNumber
+          in: query
+          description: Exact filter for asset serial number
+          required: false
+          schema:
+            type: string
+        - name: filters.assetValue
+          in: query
+          description: Exact filter for asset value
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[assetValue].from'
+          in: query
+          description: Filter asset value from value
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[assetValue].to'
+          in: query
+          description: Filter asset value to value
+          required: false
+          schema:
+            type: string
+        - name: filters.isActive
+          in: query
+          description: Exact filter for is active
+          required: false
+          schema:
+            type: boolean
+        - name: filters.note
+          in: query
+          description: Exact filter for note
+          required: false
+          schema:
+            type: string
+        - name: filters.createdAt
+          in: query
+          description: Exact filter for created at
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[createdAt].from'
+          in: query
+          description: Filter created at from value
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[createdAt].to'
+          in: query
+          description: Filter created at to value
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: filters.updatedAt
+          in: query
+          description: Exact filter for updated at
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[updatedAt].from'
+          in: query
+          description: Filter updated at from value
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[updatedAt].to'
+          in: query
+          description: Filter updated at to value
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PaginationResponseRentingAssetDTO'
+    post:
+      tags:
+        - RentingAsset
+      summary: Create a new asset record under a renting agreement
+      operationId: create_2
+      parameters:
+        - name: rentingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: >-
+            Unique key for idempotent requests. If provided, ensures that
+            identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RentingAssetDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RentingAssetDTO'
+  '/api/v1/renting-agreements/{rentingAgreementId}/assets/{rentingAssetId}/usage-records':
+    get:
+      tags:
+        - RentingUsageRecord
+      summary: List or search usage records for a given asset
+      operationId: findAll_3
+      parameters:
+        - name: rentingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: rentingAssetId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: pagination.pageNumber
+          in: query
+          description: Page number (0-based)
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: pagination.pageSize
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: pagination.sortBy
+          in: query
+          description: Field to sort by
+          required: false
+          schema:
+            type: string
+        - name: pagination.sortDirection
+          in: query
+          description: Sort direction (ASC or DESC)
+          required: false
+          schema:
+            type: string
+            default: DESC
+        - name: options.caseInsensitiveStrings
+          in: query
+          description: Enable case-insensitive string filtering
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: options.includeInheritedFields
+          in: query
+          description: Include fields from parent classes
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: filters.rentingAssetId
+          in: query
+          description: Exact filter for renting asset id
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: filters.usageDate
+          in: query
+          description: Exact filter for usage date
+          required: false
+          schema:
+            type: string
+        - name: filters.mileage
+          in: query
+          description: Exact filter for mileage
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: 'rangeFilters.ranges[mileage].from'
+          in: query
+          description: Filter mileage from value
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: 'rangeFilters.ranges[mileage].to'
+          in: query
+          description: Filter mileage to value
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: filters.usageDetail
+          in: query
+          description: Exact filter for usage detail
+          required: false
+          schema:
+            type: string
+        - name: filters.createdAt
+          in: query
+          description: Exact filter for created at
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[createdAt].from'
+          in: query
+          description: Filter created at from value
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[createdAt].to'
+          in: query
+          description: Filter created at to value
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: filters.updatedAt
+          in: query
+          description: Exact filter for updated at
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[updatedAt].from'
+          in: query
+          description: Filter updated at from value
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[updatedAt].to'
+          in: query
+          description: Filter updated at to value
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PaginationResponseRentingUsageRecordDTO'
+    post:
+      tags:
+        - RentingUsageRecord
+      summary: Create a new usage record
+      operationId: create_3
+      parameters:
+        - name: rentingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: rentingAssetId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: >-
+            Unique key for idempotent requests. If provided, ensures that
+            identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RentingUsageRecordDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RentingUsageRecordDTO'
+  '/api/v1/renting-agreements/{rentingAgreementId}/assets/{rentingAssetId}/service-events':
+    get:
+      tags:
+        - RentingServiceEvent
+      summary: List or search service events for an asset
+      operationId: findAll_4
+      parameters:
+        - name: rentingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: rentingAssetId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: pagination.pageNumber
+          in: query
+          description: Page number (0-based)
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: pagination.pageSize
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: pagination.sortBy
+          in: query
+          description: Field to sort by
+          required: false
+          schema:
+            type: string
+        - name: pagination.sortDirection
+          in: query
+          description: Sort direction (ASC or DESC)
+          required: false
+          schema:
+            type: string
+            default: DESC
+        - name: options.caseInsensitiveStrings
+          in: query
+          description: Enable case-insensitive string filtering
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: options.includeInheritedFields
+          in: query
+          description: Include fields from parent classes
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: filters.rentingAssetId
+          in: query
+          description: Exact filter for renting asset id
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: filters.eventDate
+          in: query
+          description: Exact filter for event date
+          required: false
+          schema:
+            type: string
+        - name: filters.eventType
+          in: query
+          description: Exact filter for event type
+          required: false
+          schema:
+            type: string
+            enum:
+              - MAINTENANCE
+              - INSPECTION
+              - REPAIR
+              - ACCIDENT
+              - REPLACEMENT
+              - WARRANTY
+        - name: filters.cost
+          in: query
+          description: Exact filter for cost
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[cost].from'
+          in: query
+          description: Filter cost from value
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[cost].to'
+          in: query
+          description: Filter cost to value
+          required: false
+          schema:
+            type: string
+        - name: filters.note
+          in: query
+          description: Exact filter for note
+          required: false
+          schema:
+            type: string
+        - name: filters.createdAt
+          in: query
+          description: Exact filter for created at
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[createdAt].from'
+          in: query
+          description: Filter created at from value
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[createdAt].to'
+          in: query
+          description: Filter created at to value
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: filters.updatedAt
+          in: query
+          description: Exact filter for updated at
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[updatedAt].from'
+          in: query
+          description: Filter updated at from value
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[updatedAt].to'
+          in: query
+          description: Filter updated at to value
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PaginationResponseRentingServiceEventDTO'
+    post:
+      tags:
+        - RentingServiceEvent
+      summary: Create a new service event record
+      operationId: create_4
+      parameters:
+        - name: rentingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: rentingAssetId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: >-
+            Unique key for idempotent requests. If provided, ensures that
+            identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RentingServiceEventDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RentingServiceEventDTO'
+components:
+  schemas:
+    RentingAgreementDTO:
+      type: object
+      properties:
+        rentingAgreementId:
+          type: integer
+          format: int64
+          readOnly: true
+        contractId:
+          type: integer
+          format: int64
+        customerId:
+          type: integer
+          format: int64
+        agreementStatus:
+          type: string
+          enum:
+            - ACTIVE
+            - SUSPENDED
+            - CLOSED
+            - TERMINATED
+            - DEFAULTED
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        monthlyRent:
+          type: number
+        servicesIncluded:
+          type: boolean
+        insuranceFee:
+          type: number
+        remarks:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    RentingBillingScheduleDTO:
+      type: object
+      properties:
+        rentingBillingScheduleId:
+          type: integer
+          format: int64
+          readOnly: true
+        rentingAgreementId:
+          type: integer
+          format: int64
+        installmentNumber:
+          type: integer
+          format: int32
+        dueDate:
+          type: string
+          format: date
+        rentAmount:
+          type: number
+        serviceFee:
+          type: number
+        totalDue:
+          type: number
+        isPaid:
+          type: boolean
+        paidDate:
+          type: string
+          format: date
+        note:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    RentingAssetDTO:
+      type: object
+      properties:
+        rentingAssetId:
+          type: integer
+          format: int64
+          readOnly: true
+        rentingAgreementId:
+          type: integer
+          format: int64
+        assetTypeId:
+          type: integer
+          format: int64
+        assetDescription:
+          type: string
+        assetSerialNumber:
+          type: string
+        assetValue:
+          type: number
+        isActive:
+          type: boolean
+        note:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    RentingUsageRecordDTO:
+      type: object
+      properties:
+        rentingUsageRecordId:
+          type: integer
+          format: int64
+          readOnly: true
+        rentingAssetId:
+          type: integer
+          format: int64
+        usageDate:
+          type: string
+          format: date
+        mileage:
+          type: integer
+          format: int32
+        usageDetail:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    RentingServiceEventDTO:
+      type: object
+      properties:
+        rentingServiceEventId:
+          type: integer
+          format: int64
+          readOnly: true
+        rentingAssetId:
+          type: integer
+          format: int64
+        eventDate:
+          type: string
+          format: date
+        eventType:
+          type: string
+          enum:
+            - MAINTENANCE
+            - INSPECTION
+            - REPAIR
+            - ACCIDENT
+            - REPLACEMENT
+            - WARRANTY
+        cost:
+          type: number
+        note:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    RentingReturnRecordDTO:
+      type: object
+      properties:
+        rentingReturnRecordId:
+          type: integer
+          format: int64
+          readOnly: true
+        rentingAssetId:
+          type: integer
+          format: int64
+        actualReturnDate:
+          type: string
+          format: date
+        conditionReport:
+          type: string
+        damageCost:
+          type: number
+        isFinalized:
+          type: boolean
+        note:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    PaginationResponseRentingAgreementDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          description: The list of items for the current page.
+          items:
+            $ref: '#/components/schemas/RentingAgreementDTO'
+        totalElements:
+          type: integer
+          description: The total number of elements across all pages.
+          format: int64
+        totalPages:
+          type: integer
+          description: The total number of pages based on the data size and page size.
+          format: int32
+        currentPage:
+          type: integer
+          description: 'The current page number, typically zero-based.'
+          format: int32
+      description: >-
+        Represents a paginated response containing a list of items and
+        pagination metadata.
+    PaginationResponseRentingBillingScheduleDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          description: The list of items for the current page.
+          items:
+            $ref: '#/components/schemas/RentingBillingScheduleDTO'
+        totalElements:
+          type: integer
+          description: The total number of elements across all pages.
+          format: int64
+        totalPages:
+          type: integer
+          description: The total number of pages based on the data size and page size.
+          format: int32
+        currentPage:
+          type: integer
+          description: 'The current page number, typically zero-based.'
+          format: int32
+      description: >-
+        Represents a paginated response containing a list of items and
+        pagination metadata.
+    PaginationResponseRentingAssetDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          description: The list of items for the current page.
+          items:
+            $ref: '#/components/schemas/RentingAssetDTO'
+        totalElements:
+          type: integer
+          description: The total number of elements across all pages.
+          format: int64
+        totalPages:
+          type: integer
+          description: The total number of pages based on the data size and page size.
+          format: int32
+        currentPage:
+          type: integer
+          description: 'The current page number, typically zero-based.'
+          format: int32
+      description: >-
+        Represents a paginated response containing a list of items and
+        pagination metadata.
+    PaginationResponseRentingUsageRecordDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          description: The list of items for the current page.
+          items:
+            $ref: '#/components/schemas/RentingUsageRecordDTO'
+        totalElements:
+          type: integer
+          description: The total number of elements across all pages.
+          format: int64
+        totalPages:
+          type: integer
+          description: The total number of pages based on the data size and page size.
+          format: int32
+        currentPage:
+          type: integer
+          description: 'The current page number, typically zero-based.'
+          format: int32
+      description: >-
+        Represents a paginated response containing a list of items and
+        pagination metadata.
+    PaginationResponseRentingServiceEventDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          description: The list of items for the current page.
+          items:
+            $ref: '#/components/schemas/RentingServiceEventDTO'
+        totalElements:
+          type: integer
+          description: The total number of elements across all pages.
+          format: int64
+        totalPages:
+          type: integer
+          description: The total number of pages based on the data size and page size.
+          format: int32
+        currentPage:
+          type: integer
+          description: 'The current page number, typically zero-based.'
+          format: int32
+      description: >-
+        Represents a paginated response containing a list of items and
+        pagination metadata.

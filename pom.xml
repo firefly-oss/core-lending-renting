@@ -18,6 +18,7 @@
         <module>core-lending-renting-interfaces</module>
         <module>core-lending-renting-models</module>
         <module>core-lending-renting-web</module>
+        <module>core-lending-renting-sdk</module>
     </modules>
 
 
@@ -48,6 +49,11 @@
             <dependency>
                 <groupId>com.catalis</groupId>
                 <artifactId>core-lending-renting-web</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.catalis</groupId>
+                <artifactId>core-lending-renting-sdk</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
