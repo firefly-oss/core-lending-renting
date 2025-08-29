@@ -280,7 +280,7 @@ The service exposes the following actuator endpoints:
 This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
 
 ```
-Copyright © 2023 Catalis
+Copyright © 2023 Firefly
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
