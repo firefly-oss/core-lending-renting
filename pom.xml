@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.catalis</groupId>
+        <groupId>com.firefly</groupId>
         <artifactId>lib-parent-pom</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
@@ -32,27 +32,27 @@
         <dependencies>
             <!-- Internal modules -->
             <dependency>
-                <groupId>com.catalis</groupId>
+                <groupId>com.firefly</groupId>
                 <artifactId>core-lending-renting-interfaces</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.catalis</groupId>
+                <groupId>com.firefly</groupId>
                 <artifactId>core-lending-renting-models</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.catalis</groupId>
+                <groupId>com.firefly</groupId>
                 <artifactId>core-lending-renting-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.catalis</groupId>
+                <groupId>com.firefly</groupId>
                 <artifactId>core-lending-renting-web</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.catalis</groupId>
+                <groupId>com.firefly</groupId>
                 <artifactId>core-lending-renting-sdk</artifactId>
                 <version>${project.version}</version>
             </dependency>
