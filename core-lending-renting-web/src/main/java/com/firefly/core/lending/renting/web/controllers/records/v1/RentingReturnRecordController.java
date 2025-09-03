@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/v1/renting-agreements/{rentingAgreementId}/assets/{rentingAssetId}/return-record")
 @Tag(name = "RentingReturnRecord", description = "Tracks the final return details of a rented asset.")
@@ -20,8 +22,8 @@ public class RentingReturnRecordController {
     @GetMapping
     @Operation(summary = "Get the return record of an asset (if any)")
     public Mono<ResponseEntity<RentingReturnRecordDTO>> getByAsset(
-            @PathVariable Long rentingAgreementId,
-            @PathVariable Long rentingAssetId) {
+            @PathVariable UUID rentingAgreementId,
+            @PathVariable UUID rentingAssetId) {
 
         return service.getByAsset(rentingAgreementId, rentingAssetId)
                 .map(ResponseEntity::ok);
@@ -30,8 +32,8 @@ public class RentingReturnRecordController {
     @PostMapping
     @Operation(summary = "Create a return record (once the asset is returned)")
     public Mono<ResponseEntity<RentingReturnRecordDTO>> create(
-            @PathVariable Long rentingAgreementId,
-            @PathVariable Long rentingAssetId,
+            @PathVariable UUID rentingAgreementId,
+            @PathVariable UUID rentingAssetId,
             @RequestBody RentingReturnRecordDTO dto) {
 
         return service.create(rentingAgreementId, rentingAssetId, dto)
@@ -41,8 +43,8 @@ public class RentingReturnRecordController {
     @PutMapping
     @Operation(summary = "Update the return record (e.g., if damageCost changes)")
     public Mono<ResponseEntity<RentingReturnRecordDTO>> update(
-            @PathVariable Long rentingAgreementId,
-            @PathVariable Long rentingAssetId,
+            @PathVariable UUID rentingAgreementId,
+            @PathVariable UUID rentingAssetId,
             @RequestBody RentingReturnRecordDTO dto) {
 
         return service.update(rentingAgreementId, rentingAssetId, dto)
@@ -52,8 +54,8 @@ public class RentingReturnRecordController {
     @DeleteMapping
     @Operation(summary = "Delete the return record for an asset")
     public Mono<ResponseEntity<Void>> delete(
-            @PathVariable Long rentingAgreementId,
-            @PathVariable Long rentingAssetId) {
+            @PathVariable UUID rentingAgreementId,
+            @PathVariable UUID rentingAssetId) {
 
         return service.delete(rentingAgreementId, rentingAssetId)
                 .thenReturn(ResponseEntity.noContent().build());

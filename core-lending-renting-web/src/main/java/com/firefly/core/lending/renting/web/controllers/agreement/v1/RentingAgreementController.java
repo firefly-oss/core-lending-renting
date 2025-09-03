@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/v1/renting-agreements")
 @Tag(name = "RentingAgreement", description = "Operations on renting (operating lease) agreements")
@@ -38,7 +40,7 @@ public class RentingAgreementController {
     @GetMapping("/{rentingAgreementId}")
     @Operation(summary = "Get a renting agreement by ID")
     public Mono<ResponseEntity<RentingAgreementDTO>> getById(
-            @PathVariable Long rentingAgreementId) {
+            @PathVariable UUID rentingAgreementId) {
 
         return service.getById(rentingAgreementId)
                 .map(ResponseEntity::ok);
@@ -47,7 +49,7 @@ public class RentingAgreementController {
     @PutMapping("/{rentingAgreementId}")
     @Operation(summary = "Update an existing renting agreement")
     public Mono<ResponseEntity<RentingAgreementDTO>> update(
-            @PathVariable Long rentingAgreementId,
+            @PathVariable UUID rentingAgreementId,
             @RequestBody RentingAgreementDTO dto) {
 
         return service.update(rentingAgreementId, dto)
@@ -56,7 +58,7 @@ public class RentingAgreementController {
 
     @DeleteMapping("/{rentingAgreementId}")
     @Operation(summary = "Delete a renting agreement")
-    public Mono<ResponseEntity<Void>> delete(@PathVariable Long rentingAgreementId) {
+    public Mono<ResponseEntity<Void>> delete(@PathVariable UUID rentingAgreementId) {
         return service.delete(rentingAgreementId)
                 .thenReturn(ResponseEntity.noContent().build());
     }

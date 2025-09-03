@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/v1/renting-agreements/{rentingAgreementId}/assets/{rentingAssetId}/service-events")
 @Tag(name = "RentingServiceEvent", description = "Maintenance/repair service events for a rented asset")
@@ -22,8 +24,8 @@ public class RentingServiceEventController {
     @GetMapping
     @Operation(summary = "List or search service events for an asset")
     public Mono<ResponseEntity<PaginationResponse<RentingServiceEventDTO>>> findAll(
-            @PathVariable Long rentingAgreementId,
-            @PathVariable Long rentingAssetId,
+            @PathVariable UUID rentingAgreementId,
+            @PathVariable UUID rentingAssetId,
             @ModelAttribute FilterRequest<RentingServiceEventDTO> filterRequest) {
 
         return service.findAll(rentingAgreementId, rentingAssetId, filterRequest)
@@ -33,8 +35,8 @@ public class RentingServiceEventController {
     @PostMapping
     @Operation(summary = "Create a new service event record")
     public Mono<ResponseEntity<RentingServiceEventDTO>> create(
-            @PathVariable Long rentingAgreementId,
-            @PathVariable Long rentingAssetId,
+            @PathVariable UUID rentingAgreementId,
+            @PathVariable UUID rentingAssetId,
             @RequestBody RentingServiceEventDTO dto) {
 
         return service.create(rentingAgreementId, rentingAssetId, dto)
@@ -44,9 +46,9 @@ public class RentingServiceEventController {
     @GetMapping("/{rentingServiceEventId}")
     @Operation(summary = "Get a service event by ID")
     public Mono<ResponseEntity<RentingServiceEventDTO>> getById(
-            @PathVariable Long rentingAgreementId,
-            @PathVariable Long rentingAssetId,
-            @PathVariable Long rentingServiceEventId) {
+            @PathVariable UUID rentingAgreementId,
+            @PathVariable UUID rentingAssetId,
+            @PathVariable UUID rentingServiceEventId) {
 
         return service.getById(rentingAgreementId, rentingAssetId, rentingServiceEventId)
                 .map(ResponseEntity::ok);
@@ -55,9 +57,9 @@ public class RentingServiceEventController {
     @PutMapping("/{rentingServiceEventId}")
     @Operation(summary = "Update a service event record")
     public Mono<ResponseEntity<RentingServiceEventDTO>> update(
-            @PathVariable Long rentingAgreementId,
-            @PathVariable Long rentingAssetId,
-            @PathVariable Long rentingServiceEventId,
+            @PathVariable UUID rentingAgreementId,
+            @PathVariable UUID rentingAssetId,
+            @PathVariable UUID rentingServiceEventId,
             @RequestBody RentingServiceEventDTO dto) {
 
         return service.update(rentingAgreementId, rentingAssetId, rentingServiceEventId, dto)
@@ -67,9 +69,9 @@ public class RentingServiceEventController {
     @DeleteMapping("/{rentingServiceEventId}")
     @Operation(summary = "Delete a service event record")
     public Mono<ResponseEntity<Void>> delete(
-            @PathVariable Long rentingAgreementId,
-            @PathVariable Long rentingAssetId,
-            @PathVariable Long rentingServiceEventId) {
+            @PathVariable UUID rentingAgreementId,
+            @PathVariable UUID rentingAssetId,
+            @PathVariable UUID rentingServiceEventId) {
 
         return service.delete(rentingAgreementId, rentingAssetId, rentingServiceEventId)
                 .thenReturn(ResponseEntity.noContent().build());
