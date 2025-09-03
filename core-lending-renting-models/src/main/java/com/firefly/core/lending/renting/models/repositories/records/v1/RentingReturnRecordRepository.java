@@ -4,7 +4,9 @@ import com.firefly.core.lending.renting.models.entities.records.v1.RentingReturn
 import com.firefly.core.lending.renting.models.repositories.BaseRepository;
 import reactor.core.publisher.Mono;
 
-public interface RentingReturnRecordRepository extends BaseRepository<RentingReturnRecord, Long> {
-    Mono<RentingReturnRecord> findByRentingAssetId(Long rentingAssetId);
-    Mono<Void> deleteByRentingAssetId(Long rentingAssetId);
+import java.util.UUID;
+
+public interface RentingReturnRecordRepository extends BaseRepository<RentingReturnRecord, UUID> {
+    Mono<RentingReturnRecord> findByRentingAssetId(UUID rentingAssetId);
+    Mono<Void> deleteByRentingAssetId(UUID rentingAssetId);
 }

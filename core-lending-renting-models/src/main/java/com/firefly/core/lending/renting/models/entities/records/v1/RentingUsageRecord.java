@@ -10,6 +10,7 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -20,10 +21,10 @@ public class RentingUsageRecord {
 
     @Id
     @Column("renting_usage_record_id")
-    private Long rentingUsageRecordId;
+    private UUID rentingUsageRecordId;
 
     @Column("renting_asset_id")
-    private Long rentingAssetId;
+    private UUID rentingAssetId;
 
     @Column("usage_date")
     private LocalDate usageDate;

@@ -11,6 +11,7 @@ import org.springframework.data.relational.core.mapping.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -21,10 +22,10 @@ public class RentingBillingSchedule {
 
     @Id
     @Column("renting_billing_schedule_id")
-    private Long rentingBillingScheduleId;
+    private UUID rentingBillingScheduleId;
 
     @Column("renting_agreement_id")
-    private Long rentingAgreementId;
+    private UUID rentingAgreementId;
 
     @Column("installment_number")
     private Integer installmentNumber;
