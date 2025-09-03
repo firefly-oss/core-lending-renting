@@ -24,6 +24,11 @@
             <artifactId>lib-utils</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.firefly</groupId>
+            <artifactId>lib-commons-validators</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!-- Validation -->
         <dependency>
