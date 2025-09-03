@@ -5,6 +5,8 @@ import com.firefly.common.core.queries.PaginationResponse;
 import com.firefly.core.lending.renting.interfaces.dtos.records.v1.RentingUsageRecordDTO;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 public interface RentingUsageRecordService {
 
     /**
@@ -16,8 +18,8 @@ public interface RentingUsageRecordService {
      * @param filterRequest the filtering criteria and pagination details for querying the renting usage records
      * @return a reactive Mono containing the paginated response with the list of RentingUsageRecordDTO objects
      */
-    Mono<PaginationResponse<RentingUsageRecordDTO>> findAll(Long rentingAgreementId,
-                                                            Long rentingAssetId,
+    Mono<PaginationResponse<RentingUsageRecordDTO>> findAll(UUID rentingAgreementId,
+                                                            UUID rentingAssetId,
                                                             FilterRequest<RentingUsageRecordDTO> filterRequest);
 
     /**
@@ -28,8 +30,8 @@ public interface RentingUsageRecordService {
      * @param dto the data transfer object containing the details of the renting usage record to be created
      * @return a reactive Mono containing the newly created RentingUsageRecordDTO
      */
-    Mono<RentingUsageRecordDTO> create(Long rentingAgreementId,
-                                       Long rentingAssetId,
+    Mono<RentingUsageRecordDTO> create(UUID rentingAgreementId,
+                                       UUID rentingAssetId,
                                        RentingUsageRecordDTO dto);
 
     /**
@@ -40,9 +42,9 @@ public interface RentingUsageRecordService {
      * @param rentingUsageRecordId the ID of the usage record to retrieve
      * @return a reactive Mono containing the details of the RentingUsageRecordDTO, or an empty Mono if not found
      */
-    Mono<RentingUsageRecordDTO> getById(Long rentingAgreementId,
-                                        Long rentingAssetId,
-                                        Long rentingUsageRecordId);
+    Mono<RentingUsageRecordDTO> getById(UUID rentingAgreementId,
+                                        UUID rentingAssetId,
+                                        UUID rentingUsageRecordId);
 
     /**
      * Updates an existing renting usage record associated with a specific renting agreement and renting asset.
@@ -53,9 +55,9 @@ public interface RentingUsageRecordService {
      * @param dto the data transfer object containing the updated details of the renting usage record
      * @return a reactive Mono containing the updated RentingUsageRecordDTO, or an error if the update operation fails
      */
-    Mono<RentingUsageRecordDTO> update(Long rentingAgreementId,
-                                       Long rentingAssetId,
-                                       Long rentingUsageRecordId,
+    Mono<RentingUsageRecordDTO> update(UUID rentingAgreementId,
+                                       UUID rentingAssetId,
+                                       UUID rentingUsageRecordId,
                                        RentingUsageRecordDTO dto);
 
     /**
@@ -66,7 +68,7 @@ public interface RentingUsageRecordService {
      * @param rentingUsageRecordId the unique identifier of the renting usage record to be deleted
      * @return a {@code Mono<Void>} signaling the completion of the delete operation
      */
-    Mono<Void> delete(Long rentingAgreementId,
-                      Long rentingAssetId,
-                      Long rentingUsageRecordId);
+    Mono<Void> delete(UUID rentingAgreementId,
+                      UUID rentingAssetId,
+                      UUID rentingUsageRecordId);
 }

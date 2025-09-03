@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 @Service
 @Transactional
 public class RentingReturnRecordServiceImpl implements RentingReturnRecordService {
@@ -20,13 +22,13 @@ public class RentingReturnRecordServiceImpl implements RentingReturnRecordServic
     private RentingReturnRecordMapper mapper;
 
     @Override
-    public Mono<RentingReturnRecordDTO> getByAsset(Long rentingAgreementId, Long rentingAssetId) {
+    public Mono<RentingReturnRecordDTO> getByAsset(UUID rentingAgreementId, UUID rentingAssetId) {
         return repository.findByRentingAssetId(rentingAssetId)
                 .map(mapper::toDTO);
     }
 
     @Override
-    public Mono<RentingReturnRecordDTO> create(Long rentingAgreementId, Long rentingAssetId, RentingReturnRecordDTO dto) {
+    public Mono<RentingReturnRecordDTO> create(UUID rentingAgreementId, UUID rentingAssetId, RentingReturnRecordDTO dto) {
         RentingReturnRecord entity = mapper.toEntity(dto);
         entity.setRentingAssetId(rentingAssetId);
         return repository.save(entity)
@@ -34,7 +36,7 @@ public class RentingReturnRecordServiceImpl implements RentingReturnRecordServic
     }
 
     @Override
-    public Mono<RentingReturnRecordDTO> update(Long rentingAgreementId, Long rentingAssetId, RentingReturnRecordDTO dto) {
+    public Mono<RentingReturnRecordDTO> update(UUID rentingAgreementId, UUID rentingAssetId, RentingReturnRecordDTO dto) {
         return repository.findByRentingAssetId(rentingAssetId)
                 .flatMap(existing -> {
                     RentingReturnRecord updatedEntity = mapper.toEntity(dto);
@@ -45,7 +47,7 @@ public class RentingReturnRecordServiceImpl implements RentingReturnRecordServic
     }
 
     @Override
-    public Mono<Void> delete(Long rentingAgreementId, Long rentingAssetId) {
+    public Mono<Void> delete(UUID rentingAgreementId, UUID rentingAssetId) {
         return repository.deleteByRentingAssetId(rentingAssetId);
     }
 }

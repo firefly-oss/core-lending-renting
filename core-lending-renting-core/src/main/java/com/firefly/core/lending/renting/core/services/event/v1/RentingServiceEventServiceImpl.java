@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 @Service
 @Transactional
 public class RentingServiceEventServiceImpl implements RentingServiceEventService {
@@ -23,7 +25,7 @@ public class RentingServiceEventServiceImpl implements RentingServiceEventServic
     private RentingServiceEventMapper mapper;
 
     @Override
-    public Mono<PaginationResponse<RentingServiceEventDTO>> findAll(Long rentingAgreementId, Long rentingAssetId, FilterRequest<RentingServiceEventDTO> filterRequest) {
+    public Mono<PaginationResponse<RentingServiceEventDTO>> findAll(UUID rentingAgreementId, UUID rentingAssetId, FilterRequest<RentingServiceEventDTO> filterRequest) {
         filterRequest.getFilters().setRentingAssetId(rentingAssetId);
         return FilterUtils.createFilter(
                 RentingServiceEvent.class,
@@ -32,7 +34,7 @@ public class RentingServiceEventServiceImpl implements RentingServiceEventServic
     }
 
     @Override
-    public Mono<RentingServiceEventDTO> create(Long rentingAgreementId, Long rentingAssetId, RentingServiceEventDTO dto) {
+    public Mono<RentingServiceEventDTO> create(UUID rentingAgreementId, UUID rentingAssetId, RentingServiceEventDTO dto) {
         RentingServiceEvent entity = mapper.toEntity(dto);
         entity.setRentingAssetId(rentingAssetId);
         return repository.save(entity)
@@ -40,14 +42,14 @@ public class RentingServiceEventServiceImpl implements RentingServiceEventServic
     }
 
     @Override
-    public Mono<RentingServiceEventDTO> getById(Long rentingAgreementId, Long rentingAssetId, Long rentingServiceEventId) {
+    public Mono<RentingServiceEventDTO> getById(UUID rentingAgreementId, UUID rentingAssetId, UUID rentingServiceEventId) {
         return repository.findById(rentingServiceEventId)
                 .filter(event -> event.getRentingAssetId().equals(rentingAssetId))
                 .map(mapper::toDTO);
     }
 
     @Override
-    public Mono<RentingServiceEventDTO> update(Long rentingAgreementId, Long rentingAssetId, Long rentingServiceEventId, RentingServiceEventDTO dto) {
+    public Mono<RentingServiceEventDTO> update(UUID rentingAgreementId, UUID rentingAssetId, UUID rentingServiceEventId, RentingServiceEventDTO dto) {
         return repository.findById(rentingServiceEventId)
                 .filter(event -> event.getRentingAssetId().equals(rentingAssetId))
                 .flatMap(existingEvent -> {
@@ -60,7 +62,7 @@ public class RentingServiceEventServiceImpl implements RentingServiceEventServic
     }
 
     @Override
-    public Mono<Void> delete(Long rentingAgreementId, Long rentingAssetId, Long rentingServiceEventId) {
+    public Mono<Void> delete(UUID rentingAgreementId, UUID rentingAssetId, UUID rentingServiceEventId) {
         return repository.findById(rentingServiceEventId)
                 .filter(event -> event.getRentingAssetId().equals(rentingAssetId))
                 .flatMap(repository::delete);

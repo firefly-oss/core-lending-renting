@@ -5,6 +5,8 @@ import com.firefly.common.core.queries.PaginationResponse;
 import com.firefly.core.lending.renting.interfaces.dtos.event.v1.RentingServiceEventDTO;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 public interface RentingServiceEventService {
 
     /**
@@ -15,8 +17,8 @@ public interface RentingServiceEventService {
      * @param filterRequest the filtering criteria and pagination details for querying the renting service events
      * @return a reactive Mono containing the paginated response with the list of RentingServiceEventDTO objects
      */
-    Mono<PaginationResponse<RentingServiceEventDTO>> findAll(Long rentingAgreementId,
-                                                             Long rentingAssetId,
+    Mono<PaginationResponse<RentingServiceEventDTO>> findAll(UUID rentingAgreementId,
+                                                             UUID rentingAssetId,
                                                              FilterRequest<RentingServiceEventDTO> filterRequest);
 
     /**
@@ -27,8 +29,8 @@ public interface RentingServiceEventService {
      * @param dto the data transfer object containing the details of the renting service event to be created
      * @return a reactive Mono containing the newly created RentingServiceEventDTO
      */
-    Mono<RentingServiceEventDTO> create(Long rentingAgreementId,
-                                        Long rentingAssetId,
+    Mono<RentingServiceEventDTO> create(UUID rentingAgreementId,
+                                        UUID rentingAssetId,
                                         RentingServiceEventDTO dto);
 
     /**
@@ -39,9 +41,9 @@ public interface RentingServiceEventService {
      * @param rentingServiceEventId the unique identifier of the renting service event to retrieve
      * @return a reactive Mono containing the details of the RentingServiceEventDTO, or an empty Mono if not found
      */
-    Mono<RentingServiceEventDTO> getById(Long rentingAgreementId,
-                                         Long rentingAssetId,
-                                         Long rentingServiceEventId);
+    Mono<RentingServiceEventDTO> getById(UUID rentingAgreementId,
+                                         UUID rentingAssetId,
+                                         UUID rentingServiceEventId);
 
     /**
      * Updates an existing renting service event associated with specified renting agreement
@@ -53,9 +55,9 @@ public interface RentingServiceEventService {
      * @param dto the data transfer object containing the updated details of the renting service event
      * @return a reactive Mono containing the updated RentingServiceEventDTO, or an error if the update fails
      */
-    Mono<RentingServiceEventDTO> update(Long rentingAgreementId,
-                                        Long rentingAssetId,
-                                        Long rentingServiceEventId,
+    Mono<RentingServiceEventDTO> update(UUID rentingAgreementId,
+                                        UUID rentingAssetId,
+                                        UUID rentingServiceEventId,
                                         RentingServiceEventDTO dto);
 
     /**
@@ -67,7 +69,7 @@ public interface RentingServiceEventService {
      * @param rentingServiceEventId the unique identifier of the renting service event to be deleted
      * @return a {@code Mono<Void>} indicating the completion of the delete operation
      */
-    Mono<Void> delete(Long rentingAgreementId,
-                      Long rentingAssetId,
-                      Long rentingServiceEventId);
+    Mono<Void> delete(UUID rentingAgreementId,
+                      UUID rentingAssetId,
+                      UUID rentingServiceEventId);
 }

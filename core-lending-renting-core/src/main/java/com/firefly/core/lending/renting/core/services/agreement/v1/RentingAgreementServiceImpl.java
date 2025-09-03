@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 @Service
 @Transactional
 public class RentingAgreementServiceImpl implements RentingAgreementService {
@@ -39,13 +41,13 @@ public class RentingAgreementServiceImpl implements RentingAgreementService {
     }
 
     @Override
-    public Mono<RentingAgreementDTO> getById(Long rentingAgreementId) {
+    public Mono<RentingAgreementDTO> getById(UUID rentingAgreementId) {
         return repository.findById(rentingAgreementId)
                 .map(mapper::toDTO);
     }
 
     @Override
-    public Mono<RentingAgreementDTO> update(Long rentingAgreementId, RentingAgreementDTO dto) {
+    public Mono<RentingAgreementDTO> update(UUID rentingAgreementId, RentingAgreementDTO dto) {
         return repository.findById(rentingAgreementId)
                 .flatMap(existingAgreement -> {
                     RentingAgreement updatedEntity = mapper.toEntity(dto);
@@ -56,7 +58,7 @@ public class RentingAgreementServiceImpl implements RentingAgreementService {
     }
 
     @Override
-    public Mono<Void> delete(Long rentingAgreementId) {
+    public Mono<Void> delete(UUID rentingAgreementId) {
         return repository.findById(rentingAgreementId)
                 .flatMap(repository::delete);
     }

@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 @Service
 @Transactional
 public class RentingBillingScheduleServiceImpl implements RentingBillingScheduleService {
@@ -23,7 +25,7 @@ public class RentingBillingScheduleServiceImpl implements RentingBillingSchedule
     private RentingBillingScheduleMapper mapper;
 
     @Override
-    public Mono<PaginationResponse<RentingBillingScheduleDTO>> findAll(Long rentingAgreementId, FilterRequest<RentingBillingScheduleDTO> filterRequest) {
+    public Mono<PaginationResponse<RentingBillingScheduleDTO>> findAll(UUID rentingAgreementId, FilterRequest<RentingBillingScheduleDTO> filterRequest) {
         filterRequest.getFilters().setRentingAgreementId(rentingAgreementId);
         return FilterUtils.createFilter(
                 RentingBillingSchedule.class,
@@ -32,7 +34,7 @@ public class RentingBillingScheduleServiceImpl implements RentingBillingSchedule
     }
 
     @Override
-    public Mono<RentingBillingScheduleDTO> create(Long rentingAgreementId, RentingBillingScheduleDTO dto) {
+    public Mono<RentingBillingScheduleDTO> create(UUID rentingAgreementId, RentingBillingScheduleDTO dto) {
         dto.setRentingAgreementId(rentingAgreementId);
         RentingBillingSchedule entity = mapper.toEntity(dto);
         return repository.save(entity)
@@ -40,14 +42,14 @@ public class RentingBillingScheduleServiceImpl implements RentingBillingSchedule
     }
 
     @Override
-    public Mono<RentingBillingScheduleDTO> getById(Long rentingAgreementId, Long rentingBillingScheduleId) {
+    public Mono<RentingBillingScheduleDTO> getById(UUID rentingAgreementId, UUID rentingBillingScheduleId) {
         return repository.findById(rentingBillingScheduleId)
                 .filter(entity -> entity.getRentingAgreementId().equals(rentingAgreementId))
                 .map(mapper::toDTO);
     }
 
     @Override
-    public Mono<RentingBillingScheduleDTO> update(Long rentingAgreementId, Long rentingBillingScheduleId, RentingBillingScheduleDTO dto) {
+    public Mono<RentingBillingScheduleDTO> update(UUID rentingAgreementId, UUID rentingBillingScheduleId, RentingBillingScheduleDTO dto) {
         return repository.findById(rentingBillingScheduleId)
                 .filter(entity -> entity.getRentingAgreementId().equals(rentingAgreementId))
                 .flatMap(existingEntity -> {
@@ -60,7 +62,7 @@ public class RentingBillingScheduleServiceImpl implements RentingBillingSchedule
     }
 
     @Override
-    public Mono<Void> delete(Long rentingAgreementId, Long rentingBillingScheduleId) {
+    public Mono<Void> delete(UUID rentingAgreementId, UUID rentingBillingScheduleId) {
         return repository.findById(rentingBillingScheduleId)
                 .filter(entity -> entity.getRentingAgreementId().equals(rentingAgreementId))
                 .flatMap(repository::delete);

@@ -5,6 +5,8 @@ import com.firefly.common.core.queries.PaginationResponse;
 import com.firefly.core.lending.renting.interfaces.dtos.assets.v1.RentingAssetDTO;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 public interface RentingAssetService {
 
     /**
@@ -15,7 +17,7 @@ public interface RentingAssetService {
      * @param filterRequest the filtering criteria and pagination details for querying the renting assets
      * @return a reactive Mono containing the paginated response with the list of RentingAssetDTO objects
      */
-    Mono<PaginationResponse<RentingAssetDTO>> findAll(Long rentingAgreementId,
+    Mono<PaginationResponse<RentingAssetDTO>> findAll(UUID rentingAgreementId,
                                                       FilterRequest<RentingAssetDTO> filterRequest);
 
     /**
@@ -25,7 +27,7 @@ public interface RentingAssetService {
      * @param dto the data transfer object containing the details of the renting asset to be created
      * @return a reactive Mono containing the newly created RentingAssetDTO
      */
-    Mono<RentingAssetDTO> create(Long rentingAgreementId, RentingAssetDTO dto);
+    Mono<RentingAssetDTO> create(UUID rentingAgreementId, RentingAssetDTO dto);
 
     /**
      * Retrieves the renting asset details based on the specified renting agreement ID and renting asset ID.
@@ -34,7 +36,7 @@ public interface RentingAssetService {
      * @param rentingAssetId the ID of the renting asset to retrieve
      * @return a reactive Mono containing the details of the RentingAssetDTO, or an empty Mono if not found
      */
-    Mono<RentingAssetDTO> getById(Long rentingAgreementId, Long rentingAssetId);
+    Mono<RentingAssetDTO> getById(UUID rentingAgreementId, UUID rentingAssetId);
 
     /**
      * Updates an existing renting asset associated with a specific renting agreement.
@@ -44,7 +46,7 @@ public interface RentingAssetService {
      * @param dto the data transfer object containing the updated details of the renting asset
      * @return a reactive Mono containing the updated RentingAssetDTO, or an error if the update fails
      */
-    Mono<RentingAssetDTO> update(Long rentingAgreementId, Long rentingAssetId, RentingAssetDTO dto);
+    Mono<RentingAssetDTO> update(UUID rentingAgreementId, UUID rentingAssetId, RentingAssetDTO dto);
 
     /**
      * Deletes a renting asset that is associated with a specific renting agreement.
@@ -53,5 +55,5 @@ public interface RentingAssetService {
      * @param rentingAssetId the unique identifier of the renting asset to be deleted
      * @return a {@code Mono<Void>} signaling the completion of the delete operation
      */
-    Mono<Void> delete(Long rentingAgreementId, Long rentingAssetId);
+    Mono<Void> delete(UUID rentingAgreementId, UUID rentingAssetId);
 }

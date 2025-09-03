@@ -5,6 +5,8 @@ import com.firefly.common.core.queries.PaginationResponse;
 import com.firefly.core.lending.renting.interfaces.dtos.agreement.v1.RentingAgreementDTO;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 public interface RentingAgreementService {
 
     /**
@@ -29,7 +31,7 @@ public interface RentingAgreementService {
      * @param rentingAgreementId the unique identifier of the renting agreement to retrieve
      * @return a reactive Mono containing the retrieved RentingAgreementDTO, or an empty Mono if not found
      */
-    Mono<RentingAgreementDTO> getById(Long rentingAgreementId);
+    Mono<RentingAgreementDTO> getById(UUID rentingAgreementId);
 
     /**
      * Updates an existing renting agreement with the specified details.
@@ -38,7 +40,7 @@ public interface RentingAgreementService {
      * @param dto the DTO containing updated details of the renting agreement
      * @return a Mono emitting the updated RentingAgreementDTO, or an error if the update fails
      */
-    Mono<RentingAgreementDTO> update(Long rentingAgreementId, RentingAgreementDTO dto);
+    Mono<RentingAgreementDTO> update(UUID rentingAgreementId, RentingAgreementDTO dto);
 
     /**
      * Deletes a renting agreement based on the provided renting agreement ID.
@@ -46,5 +48,5 @@ public interface RentingAgreementService {
      * @param rentingAgreementId the unique identifier of the renting agreement to be deleted
      * @return a {@code Mono<Void>} indicating the completion of the delete operation
      */
-    Mono<Void> delete(Long rentingAgreementId);
+    Mono<Void> delete(UUID rentingAgreementId);
 }

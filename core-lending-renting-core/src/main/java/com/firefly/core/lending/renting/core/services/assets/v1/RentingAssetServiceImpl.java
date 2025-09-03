@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 @Service
 @Transactional
 public class RentingAssetServiceImpl implements RentingAssetService {
@@ -23,7 +25,7 @@ public class RentingAssetServiceImpl implements RentingAssetService {
     private RentingAssetMapper mapper;
 
     @Override
-    public Mono<PaginationResponse<RentingAssetDTO>> findAll(Long rentingAgreementId, FilterRequest<RentingAssetDTO> filterRequest) {
+    public Mono<PaginationResponse<RentingAssetDTO>> findAll(UUID rentingAgreementId, FilterRequest<RentingAssetDTO> filterRequest) {
         filterRequest.getFilters().setRentingAgreementId(rentingAgreementId);
         return FilterUtils.createFilter(
                 RentingAsset.class,
@@ -32,7 +34,7 @@ public class RentingAssetServiceImpl implements RentingAssetService {
     }
 
     @Override
-    public Mono<RentingAssetDTO> create(Long rentingAgreementId, RentingAssetDTO dto) {
+    public Mono<RentingAssetDTO> create(UUID rentingAgreementId, RentingAssetDTO dto) {
         dto.setRentingAgreementId(rentingAgreementId);
         RentingAsset entity = mapper.toEntity(dto);
         entity.setRentingAssetId(null);
@@ -42,14 +44,14 @@ public class RentingAssetServiceImpl implements RentingAssetService {
     }
 
     @Override
-    public Mono<RentingAssetDTO> getById(Long rentingAgreementId, Long rentingAssetId) {
+    public Mono<RentingAssetDTO> getById(UUID rentingAgreementId, UUID rentingAssetId) {
         return repository.findById(rentingAssetId)
                 .filter(asset -> rentingAgreementId.equals(asset.getRentingAgreementId()))
                 .map(mapper::toDTO);
     }
 
     @Override
-    public Mono<RentingAssetDTO> update(Long rentingAgreementId, Long rentingAssetId, RentingAssetDTO dto) {
+    public Mono<RentingAssetDTO> update(UUID rentingAgreementId, UUID rentingAssetId, RentingAssetDTO dto) {
         return repository.findById(rentingAssetId)
                 .filter(asset -> rentingAgreementId.equals(asset.getRentingAgreementId()))
                 .flatMap(existingAsset -> {
@@ -62,7 +64,7 @@ public class RentingAssetServiceImpl implements RentingAssetService {
     }
 
     @Override
-    public Mono<Void> delete(Long rentingAgreementId, Long rentingAssetId) {
+    public Mono<Void> delete(UUID rentingAgreementId, UUID rentingAssetId) {
         return repository.findById(rentingAssetId)
                 .filter(asset -> rentingAgreementId.equals(asset.getRentingAgreementId()))
                 .flatMap(repository::delete);

@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -25,7 +26,7 @@ public class RentingUsageRecordServiceImpl implements RentingUsageRecordService 
     private RentingUsageRecordMapper mapper;
 
     @Override
-    public Mono<PaginationResponse<RentingUsageRecordDTO>> findAll(Long rentingAgreementId, Long rentingAssetId, FilterRequest<RentingUsageRecordDTO> filterRequest) {
+    public Mono<PaginationResponse<RentingUsageRecordDTO>> findAll(UUID rentingAgreementId, UUID rentingAssetId, FilterRequest<RentingUsageRecordDTO> filterRequest) {
         filterRequest.getFilters().setRentingAssetId(rentingAssetId);
         return FilterUtils.createFilter(
                 RentingUsageRecord.class,
@@ -34,7 +35,7 @@ public class RentingUsageRecordServiceImpl implements RentingUsageRecordService 
     }
 
     @Override
-    public Mono<RentingUsageRecordDTO> create(Long rentingAgreementId, Long rentingAssetId, RentingUsageRecordDTO dto) {
+    public Mono<RentingUsageRecordDTO> create(UUID rentingAgreementId, UUID rentingAssetId, RentingUsageRecordDTO dto) {
         RentingUsageRecord entity = mapper.toEntity(dto);
         entity.setRentingAssetId(rentingAssetId);
         entity.setCreatedAt(LocalDateTime.now());
@@ -44,14 +45,14 @@ public class RentingUsageRecordServiceImpl implements RentingUsageRecordService 
     }
 
     @Override
-    public Mono<RentingUsageRecordDTO> getById(Long rentingAgreementId, Long rentingAssetId, Long rentingUsageRecordId) {
+    public Mono<RentingUsageRecordDTO> getById(UUID rentingAgreementId, UUID rentingAssetId, UUID rentingUsageRecordId) {
         return repository.findById(rentingUsageRecordId)
                 .filter(record -> record.getRentingAssetId().equals(rentingAssetId))
                 .map(mapper::toDTO);
     }
 
     @Override
-    public Mono<RentingUsageRecordDTO> update(Long rentingAgreementId, Long rentingAssetId, Long rentingUsageRecordId, RentingUsageRecordDTO dto) {
+    public Mono<RentingUsageRecordDTO> update(UUID rentingAgreementId, UUID rentingAssetId, UUID rentingUsageRecordId, RentingUsageRecordDTO dto) {
         return repository.findById(rentingUsageRecordId)
                 .filter(record -> record.getRentingAssetId().equals(rentingAssetId))
                 .flatMap(existingRecord -> {
@@ -66,7 +67,7 @@ public class RentingUsageRecordServiceImpl implements RentingUsageRecordService 
     }
 
     @Override
-    public Mono<Void> delete(Long rentingAgreementId, Long rentingAssetId, Long rentingUsageRecordId) {
+    public Mono<Void> delete(UUID rentingAgreementId, UUID rentingAssetId, UUID rentingUsageRecordId) {
         return repository.findById(rentingUsageRecordId)
                 .filter(record -> record.getRentingAssetId().equals(rentingAssetId))
                 .flatMap(repository::delete);
